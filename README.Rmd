@@ -41,3 +41,10 @@ Import ABS balance of payments data by State/Territory with `read_bop()`:
 ```{r}
 djprtradedata::read_bop()
 ```
+
+Import ABS merchandise exports data with `read_merch()`:
+
+```{r}
+djprtradedata::read_merch(min_date = as.Date("2021-01-01"),
+                          max_date = as.Date("2021-02-01"))
+```

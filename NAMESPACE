@@ -2,5 +2,6 @@
 
 export("%>%")
 export(read_bop)
+export(read_merch)
 importFrom(dplyr,"%>%")
 importFrom(dplyr,.data)

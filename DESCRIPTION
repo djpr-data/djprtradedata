@@ -18,7 +18,11 @@ Suggests:
     covr,
     testthat (>= 3.0.0)
 Imports: 
+    readsdmx,
     dplyr (>= 1.0.0),
     readabs (>= 0.4.9),
-    tidyr
+    tidyr,
+    purrr
 Config/testthat/edition: 3
+Depends: 
+    R (>= 2.10)

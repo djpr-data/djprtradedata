@@ -50,3 +50,25 @@ djprtradedata::read_bop()
 #> 10 Exports         Current Price Services       Sout… 2011-09-01   513 A8509273…
 #> # … with 13,718 more rows
 ```
+
+Import ABS merchandise exports data with `read_merch()`:
+
+``` r
+djprtradedata::read_merch(min_date = as.Date("2021-01-01"),
+                          max_date = as.Date("2021-02-01"))
+#> # A tibble: 143,955 × 10
+#>    country industry sitc_rev3 time    region value   country_desc  industry_desc
+#>    <chr>   <chr>    <chr>     <chr>   <chr>  <chr>   <chr>         <chr>        
+#>  1 ANTC    C        011       2021-01 -      85.284  Antarctica    Manufacturing
+#>  2 BHRN    C        011       2021-01 -      233.659 Bahrain       Manufacturing
+#>  3 BHRN    C        011       2021-02 -      392.542 Bahrain       Manufacturing
+#>  4 BADE    C        011       2021-02 -      30.284  Bangladesh    Manufacturing
+#>  5 BRAZ    C        011       2021-01 -      594.109 Brazil        Manufacturing
+#>  6 BRAZ    C        011       2021-02 -      578.389 Brazil        Manufacturing
+#>  7 BRUN    C        011       2021-02 -      0.65    Brunei Darus… Manufacturing
+#>  8 CMBD    C        011       2021-01 -      481.318 Cambodia      Manufacturing
+#>  9 CMBD    C        011       2021-02 -      142.497 Cambodia      Manufacturing
+#> 10 CAN     C        011       2021-01 -      2553.65 Canada        Manufacturing
+#> # … with 143,945 more rows, and 2 more variables: region_desc <chr>,
+#> #   sitc_rev3_desc <chr>
+```

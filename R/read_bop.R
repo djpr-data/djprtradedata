@@ -15,41 +15,56 @@
 read_bop <- function(path = tempdir()) {
   credits <- suppressMessages(
     readabs::read_abs("5302.0", 21,
-                               path = path,
-                               check_local = FALSE,
-                               show_progress_bars = FALSE)) %>%
+      path = path,
+      check_local = FALSE,
+      show_progress_bars = FALSE
+    )
+  ) %>%
     dplyr::mutate(series = paste("Exports", .data$series, sep = " ; "))
 
   debits <- suppressMessages(
     readabs::read_abs("5302.0", 22,
-                              path = path,
-                              check_local = FALSE,
-                              show_progress_bars = FALSE)) %>%
+      path = path,
+      check_local = FALSE,
+      show_progress_bars = FALSE
+    )
+  ) %>%
     dplyr::mutate(series = paste("Imports", .data$series, sep = " ; "))
 
   bop <- dplyr::bind_rows(credits, debits)
 
   bop <- bop %>%
-    dplyr::select(.data$series,
-                  .data$date,
-                  .data$value,
-                  .data$series_id)
+    dplyr::select(
+      .data$series,
+      .data$date,
+      .data$value,
+      .data$series_id
+    )
 
   bop %>%
     tidyr::separate(.data$series,
-                    into = c("exports_imports",
-                             "indicator",
-                             "goods_state"),
-                    extra = "drop",
-                    sep = ";") %>%
+      into = c(
+        "exports_imports",
+        "indicator",
+        "goods_state"
+      ),
+      extra = "drop",
+      sep = ";"
+    ) %>%
     tidyr::separate(.data$goods_state,
-                    into = c("goods_services",
-                             "state"),
-                    sep = ",") %>%
-    dplyr::mutate(dplyr::across(!dplyr::one_of(c("date",
-                                                   "value",
-                                                   "series_id")),
-                                ~trimws(.x, "both")
-                                )) %>%
+      into = c(
+        "goods_services",
+        "state"
+      ),
+      sep = ","
+    ) %>%
+    dplyr::mutate(dplyr::across(
+      !dplyr::one_of(c(
+        "date",
+        "value",
+        "series_id"
+      )),
+      ~ trimws(.x, "both")
+    )) %>%
     dplyr::filter(!is.na(.data$value))
 }
