@@ -13,14 +13,18 @@
 #' @importFrom dplyr .data
 
 read_bop <- function(path = tempdir()) {
-  credits <- readabs::read_abs("5302.0", 21,
+  credits <- suppressMessages(
+    readabs::read_abs("5302.0", 21,
                                path = path,
-                               check_local = FALSE) %>%
+                               check_local = FALSE,
+                               show_progress_bars = FALSE)) %>%
     dplyr::mutate(series = paste("Exports", .data$series, sep = " ; "))
 
-  debits <- readabs::read_abs("5302.0", 22,
+  debits <- suppressMessages(
+    readabs::read_abs("5302.0", 22,
                               path = path,
-                              check_local = FALSE) %>%
+                              check_local = FALSE,
+                              show_progress_bars = FALSE)) %>%
     dplyr::mutate(series = paste("Imports", .data$series, sep = " ; "))
 
   bop <- dplyr::bind_rows(credits, debits)

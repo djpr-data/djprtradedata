@@ -22,3 +22,22 @@ knitr::opts_chunk$set(
 
 The goal of djprtradedata is to download, tidy and store public data used in the DJPR Trade Dashboard.
 
+## Install djprtradedata
+
+If you do not have the `devtools` package installed, install it from CRAN with: 
+```{r, eval = FALSE}
+install.packages("devtools")
+```
+
+Install `djprtradedata`:
+```{r, eval = FALSE}
+devtools::install_github("djpr-data/djprtradedata")
+```
+
+## Using djprtradedata
+
+Import ABS balance of payments data by State/Territory with `read_bop()`:
+
+```{r}
+djprtradedata::read_bop()
+```
