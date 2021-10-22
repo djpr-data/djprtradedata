@@ -4,12 +4,22 @@
 \alias{read_merch}
 \title{Download merchandise exports data}
 \usage{
-read_merch(min_date = max_date - 365, max_date = Sys.Date())
+read_merch(
+  path = tempdir(),
+  min_date = max_date - 365,
+  max_date = Sys.Date(),
+  check_local = TRUE
+)
 }
 \arguments{
+\item{path}{Path to directory where XML files should be stored}
+
 \item{min_date}{The minimum date to include in your data}
 
 \item{max_date}{The maximum date to include in your data}
+
+\item{check_local}{Check if a local version of the requested data is
+available at the \code{path} location; if present it will be loaded.}
 }
 \value{
 A tibble containing merchandise export data
