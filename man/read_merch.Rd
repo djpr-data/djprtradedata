@@ -4,7 +4,7 @@
 \alias{read_merch}
 \title{Download merchandise exports data}
 \usage{
-read_merch(min_date = Sys.Date() - 365, max_date = Sys.Date())
+read_merch(min_date = max_date - 365, max_date = Sys.Date())
 }
 \arguments{
 \item{min_date}{The minimum date to include in your data}

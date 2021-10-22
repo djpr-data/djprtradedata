@@ -17,7 +17,7 @@
 #' @return A tibble containing merchandise export data
 
 
-read_merch <- function(min_date = Sys.Date() - 365,
+read_merch <- function(min_date = max_date - 365,
                        max_date = Sys.Date()) {
   if (max_date - min_date > 365) {
     stop("Cannot download more than 12 months worth of data at a time due to ABS limits.")
