@@ -23,8 +23,8 @@
 
 
 read_merch <- function(path = tempdir(),
-                       min_date = max_date - 180,
                        max_date = Sys.Date(),
+                       min_date = max_date - 180,
                        check_local = TRUE,
                        merch_lookup = create_merch_lookup()) {
   if (max_date - min_date > 365) {
@@ -63,13 +63,27 @@ read_merch <- function(path = tempdir(),
 
   merch <- safely_read_sdmx(file)
 
+  # Check to see if merch downloaded and imported without error
   if (is.null(merch$error)) {
-    merch <- merch$result %>%
-      dplyr::as_tibble()
+    merch <- merch$result
   } else {
-    # If file did not load, try again by loading straight from URL
-    merch <- readsdmx::read_sdmx(url)
+    # If file did not load, try again one more time
+    utils::download.file(
+      url,
+      file
+    )
+    merch <- safely_read_sdmx(path)
+
+    # If it failed the second time, give an informative error
+    if (!is.null(merch$error)) {
+      stop(paste("Could not download and import", url))
+    }
+
+    merch <- merch$result
   }
+
+  merch <- merch  %>%
+    dplyr::as_tibble()
 
   names(merch) <- tolower(names(merch))
 
