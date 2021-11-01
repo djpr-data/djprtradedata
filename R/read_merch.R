@@ -10,7 +10,7 @@
 #' @param path Path to directory where XML files should be stored
 #' @param min_date The minimum date to include in your data
 #' @param max_date The maximum date to include in your data
-#' @param check_local Check if a local version of the requested data is
+#' @param check_local Logical. Check if a local version of the requested data is
 #' available at the `path` location; if present it will be loaded.
 #' @param merch_lookup A list of tibbles containing short and long versions
 #' of various data entries; see `create_merch_lookup()`.
@@ -43,7 +43,7 @@ read_merch <- function(path = tempdir(),
 
   file <- file.path(
     path,
-    paste0("abs_merch_", min_month, "_", max_month, ".xml")
+    paste0("abs_merch_", min_date, "_", max_date, ".xml")
   )
 
   if (isFALSE(check_local) || !file.exists(file)) {

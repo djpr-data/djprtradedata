@@ -19,7 +19,7 @@ read_merch(
 
 \item{min_date}{The minimum date to include in your data}
 
-\item{check_local}{Check if a local version of the requested data is
+\item{check_local}{Logical. Check if a local version of the requested data is
 available at the \code{path} location; if present it will be loaded.}
 
 \item{merch_lookup}{A list of tibbles containing short and long versions
