@@ -59,8 +59,17 @@ read_merch <- function(path = tempdir(),
     message("Loading merchandise trade from local file:\n", file)
   }
 
-  merch <- readsdmx::read_sdmx(file) %>%
-    dplyr::as_tibble()
+  safely_read_sdmx <- purrr::safely(readsdmx::read_sdmx)
+
+  merch <- safely_read_sdmx(file)
+
+  if (is.null(merch$error)) {
+    merch <- merch$result %>%
+      dplyr::as_tibble()
+  } else {
+    # If file did not load, try again by loading straight from URL
+    merch <- readsdmx::read_sdmx(url)
+  }
 
   names(merch) <- tolower(names(merch))
 
