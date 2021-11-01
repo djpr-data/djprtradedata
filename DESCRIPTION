@@ -16,15 +16,17 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.2
 Suggests: 
     covr,
+    here,
     testthat (>= 3.0.0)
 Imports: 
     readsdmx,
     dplyr (>= 1.0.0),
     readabs (>= 0.4.9.904),
     tidyr,
-    purrr
+    purrr,
+    lubridate
 Config/testthat/edition: 3
 Depends: 
     R (>= 2.10)
-Remotes:  
+Remotes: 
     MattCowgill/readabs

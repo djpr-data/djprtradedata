@@ -6,9 +6,10 @@
 \usage{
 read_merch(
   path = tempdir(),
-  min_date = max_date - 365,
+  min_date = max_date - 180,
   max_date = Sys.Date(),
-  check_local = TRUE
+  check_local = TRUE,
+  merch_lookup = create_merch_lookup()
 )
 }
 \arguments{
@@ -20,6 +21,9 @@ read_merch(
 
 \item{check_local}{Check if a local version of the requested data is
 available at the \code{path} location; if present it will be loaded.}
+
+\item{merch_lookup}{A list of tibbles containing short and long versions
+of various data entries; see \code{create_merch_lookup()}.}
 }
 \value{
 A tibble containing merchandise export data

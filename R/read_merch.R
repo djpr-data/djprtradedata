@@ -12,6 +12,8 @@
 #' @param max_date The maximum date to include in your data
 #' @param check_local Check if a local version of the requested data is
 #' available at the `path` location; if present it will be loaded.
+#' @param merch_lookup A list of tibbles containing short and long versions
+#' of various data entries; see `create_merch_lookup()`.
 #' @examples
 #' \dontrun{
 #' read_merch()
@@ -21,9 +23,10 @@
 
 
 read_merch <- function(path = tempdir(),
-                       min_date = max_date - 365,
+                       min_date = max_date - 180,
                        max_date = Sys.Date(),
-                       check_local = TRUE) {
+                       check_local = TRUE,
+                       merch_lookup = create_merch_lookup()) {
   if (max_date - min_date > 365) {
     stop("Cannot download more than 12 months worth of data at a time due to ABS limits.")
   }
@@ -38,15 +41,19 @@ read_merch <- function(path = tempdir(),
     max_month
   )
 
-  file <- file.path(path,
-            paste0("abs_merch_", min_month, "_", max_month, ".xml"))
+  file <- file.path(
+    path,
+    paste0("abs_merch_", min_month, "_", max_month, ".xml")
+  )
 
   if (isFALSE(check_local) || !file.exists(file)) {
-    message("Downloading merchandise trade data from ", min_month, " to ",
-            max_month)
-    utils::download.file(url,
-                         file,
-                         mode = "wb"
+    message(
+      "Downloading merchandise trade data from ", min_month, " to ",
+      max_month
+    )
+    utils::download.file(
+      url,
+      file
     )
   } else {
     message("Loading merchandise trade from local file:\n", file)
@@ -72,10 +79,29 @@ read_merch <- function(path = tempdir(),
     )
   }
 
-  suppressMessages(
+  merch <- merch %>%
+    dplyr::mutate(
+      value = as.numeric(.data$value),
+      unit = "000s"
+    )
+
+  merch <- suppressMessages(
     purrr::reduce(
-      .x = c(list(merch), lookup),
+      .x = c(list(merch), merch_lookup),
       .f = dplyr::left_join
     )
   )
+
+  merch <- merch %>%
+    dplyr::mutate(date = lubridate::ymd(paste0(.data$time, "-01"))) %>%
+    dplyr::select(.data$date,
+      country_dest = .data$country_desc,
+      industry = .data$industry_desc,
+      sitc_rev3 = .data$sitc_rev3_desc,
+      sitc_rev3_code = .data$sitc_rev3,
+      origin = .data$region_desc,
+      .data$unit
+    )
+
+  merch
 }

@@ -4,7 +4,10 @@
 \alias{create_merch_lookup}
 \title{Create ABS Lookup table for merchandise exports data}
 \usage{
-create_merch_lookup()
+create_merch_lookup(path = tempdir())
+}
+\arguments{
+\item{path}{Directory in which downloaded XML should be stored}
 }
 \value{
 A list, each element of which is a \code{tbl_df}
@@ -15,4 +18,7 @@ The ABS merchandise exports data
 supplied with short codes for various data fields, such as industry and
 SITC code. This function creates a series of lookup tables that include
 English descriptions of these fields.
+}
+\examples{
+create_merch_lookup()
 }

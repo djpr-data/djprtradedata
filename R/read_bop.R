@@ -34,11 +34,15 @@ read_bop <- function(path = tempdir()) {
   bop <- dplyr::bind_rows(credits, debits)
 
   bop <- bop %>%
+    dplyr::filter(.data$series_type == "Seasonally Adjusted")
+
+  bop <- bop %>%
     dplyr::select(
       .data$series,
       .data$date,
       .data$value,
-      .data$series_id
+      .data$series_id,
+      .data$unit
     )
 
   bop %>%
@@ -62,7 +66,8 @@ read_bop <- function(path = tempdir()) {
       !dplyr::one_of(c(
         "date",
         "value",
-        "series_id"
+        "series_id",
+        "unit"
       )),
       ~ trimws(.x, "both")
     )) %>%

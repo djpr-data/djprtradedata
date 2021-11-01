@@ -5,14 +5,24 @@
 #' supplied with short codes for various data fields, such as industry and
 #' SITC code. This function creates a series of lookup tables that include
 #' English descriptions of these fields.
-#'
+#' @param path Directory in which downloaded XML should be stored
 #' @return A list, each element of which is a `tbl_df`
-#'
-
-create_merch_lookup <- function() {
+#' @export
+#' @examples
+#' create_merch_lookup()
+create_merch_lookup <- function(path = tempdir()) {
   url <- "https://stat.data.abs.gov.au/restsdmx/sdmx.ashx/GetDataStructure/MERCH_EXP"
 
-  lookup <- readsdmx::read_sdmx(url) %>%
+  file <- file.path(tempdir(), "lookup.xml")
+
+  utils::download.file(
+    url = url,
+    destfile = file,
+    mode = "wb",
+    quiet = TRUE
+  )
+
+  lookup <- readsdmx::read_sdmx(file) %>%
     dplyr::as_tibble()
 
   lookup <- lookup %>%
@@ -26,6 +36,17 @@ create_merch_lookup <- function() {
       desc = .data$en_description,
       parent_code = .data$parentCode,
       .data$value
+    )
+
+  lookup <- lookup %>%
+    dplyr::mutate(
+      desc =
+        dplyr::if_else(
+          .data$en == "State of Origin" &
+            .data$desc == "Total",
+          "Australia",
+          .data$desc
+        )
     )
 
   lookup <- lookup %>%
