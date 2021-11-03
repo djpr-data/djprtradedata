@@ -1,6 +1,6 @@
 #' Download, tidy and import ABS International Trade Supplementary Information by Calendar Year
 #'
-#' Downloads Tables 1 through 8, inculsive, of the ABS International Trade: Supplementary Information data by Calendar Year.
+#' Downloads Tables 1 through 8, inclusive, of the ABS International Trade: Supplementary Information data by Calendar Year.
 #' @param table_no Selects which tables from the ABS will be imported
 #' @param path Path where Excel files downloaded from the ABS should be stored
 #' @return A tibble containing the relevant table, or a list of tibbles if more than one ABS table has been requested
