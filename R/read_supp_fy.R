@@ -10,17 +10,17 @@
 #' }
 #' @export
 
-read_supp_cy <- function(table_no = c(1,2,3,4,5,6,7,8), path = tempdir()) {
+read_supp_fy <- function(table_no = c(1,2,3,4,5,6,7,8), path = tempdir()) {
   temp <- tempfile()
 
-  c_year <- rvest::read_html("https://www.abs.gov.au/statistics/economy/international-trade/international-trade-supplementary-information-calendar-year/latest-release")
+  f_year <- rvest::read_html("https://www.abs.gov.au/statistics/economy/international-trade/international-trade-supplementary-information-financial-year/latest-release")
 
-  c_year_url <- c_year %>%
-  	rvest::html_nodes("a") %>%
-  	rvest::html_attr("href") %>%
-  	stringr::str_subset(".zip")
+  f_year_url <- f_year %>%
+    rvest::html_nodes("a") %>%
+    rvest::html_attr("href") %>%
+    stringr::str_subset(".zip")
 
-  download.file(c_year_url, temp)
+  download.file(f_year_url, temp)
 
   unzip(temp, exdir = path)
 
@@ -34,19 +34,19 @@ read_supp_cy <- function(table_no = c(1,2,3,4,5,6,7,8), path = tempdir()) {
 
   tables <- vector(mode = "list", length = file_no)
 
-  c_year_output <- vector(mode = "list", length = file_no)
+  f_year_output <- vector(mode = "list", length = file_no)
 
   extract_files <- lapply(list.files(path = path, pattern='*.xls'),
                            readabs::extract_abs_sheets)
 
   for (j in 2:file_no-1) {
 
-    c_year_files <- extract_files[[j]]
+    f_year_files <- extract_files[[j]]
 
-    tables[[j]] <- matrix(1,length(c_year_files)-1)
+    tables[[j]] <- matrix(1,length(f_year_files)-1)
 
-    for (i in 2:length(c_year_files)-1) {
-      temp_table <- c_year_files[[i+1]]
+    for (i in 2:length(f_year_files)-1) {
+      temp_table <- f_year_files[[i+1]]
       names(temp_table) <- as.character(tidyr::drop_na(temp_table)[1,])
       series <- temp_table[3,1]
       header_row <- - which(temp_table[,1] == as.character(head(tidyr::drop_na(temp_table), n=1)[,1]))
@@ -64,12 +64,13 @@ read_supp_cy <- function(table_no = c(1,2,3,4,5,6,7,8), path = tempdir()) {
       rm(i)
     }
 
-    c_year_output[[j]] <- do.call("rbind", lapply(tables[[j]], as.name))
+    f_year_output[[j]] <- do.call("rbind", lapply(tables[[j]], as.name))
+
   }
 
-  if (length(c_year_output[table_no]) == 1){
-    c_year_output[table_no][[1]]
+  if (length(f_year_output[table_no]) == 1){
+    f_year_output[table_no][[1]]
   } else {
-    c_year_output[table_no]
+    f_year_output[table_no]
   }
 }
