@@ -88,6 +88,9 @@ read_merch <- function(path = tempdir(),
   names(merch) <- tolower(names(merch))
 
   merch <- merch %>%
+    dplyr::filter(.data$industry == "-1")
+
+  merch <- merch %>%
     dplyr::select(.data$country,
       .data$industry,
       .data$sitc_rev3,
@@ -116,10 +119,13 @@ read_merch <- function(path = tempdir(),
   )
 
   merch <- merch %>%
+    dplyr::select(-.data$industry,
+                  -.data$industry_desc)
+
+  merch <- merch %>%
     dplyr::mutate(date = lubridate::ymd(paste0(.data$time, "-01"))) %>%
     dplyr::select(.data$date,
       country_dest = .data$country_desc,
-      industry = .data$industry_desc,
       sitc_rev3 = .data$sitc_rev3_desc,
       sitc_rev3_code = .data$sitc_rev3,
       origin = .data$region_desc,
