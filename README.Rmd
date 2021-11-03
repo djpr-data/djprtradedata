@@ -48,3 +48,15 @@ Import ABS merchandise exports data with `read_merch()`:
 djprtradedata::read_merch(min_date = as.Date("2021-01-01"),
                           max_date = as.Date("2021-02-01"))
 ```
+
+Import ABS International Trade Supplementary Information by calendar year with `read_supp_cy()`:
+
+```{r}
+djprtradedata::read_supp_cy(3)
+```
+
+Import ABS International Trade Supplementary Information by financial year with `read_supp_fy()`:
+
+```{r}
+djprtradedata::read_supp_fy(3)
+```
