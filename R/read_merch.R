@@ -133,5 +133,11 @@ read_merch <- function(path = tempdir(),
       .data$value
     )
 
+  merch <- merch %>%
+    dplyr::arrange(.data$origin,
+                   .data$sitc_rev3,
+                   .data$country_dest,
+                   .data$date)
+
   merch
 }
