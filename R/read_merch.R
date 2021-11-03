@@ -123,7 +123,8 @@ read_merch <- function(path = tempdir(),
       sitc_rev3 = .data$sitc_rev3_desc,
       sitc_rev3_code = .data$sitc_rev3,
       origin = .data$region_desc,
-      .data$unit
+      .data$unit,
+      .data$value
     )
 
   merch
