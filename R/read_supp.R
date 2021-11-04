@@ -27,9 +27,9 @@ read_supp <- function(format = "cy", table_no = c(1, 2, 3, 4, 5, 6, 7, 8), path 
     rvest::html_attr("href") %>%
     stringr::str_subset(".zip")
 
-  download.file(year_url, temp)
+  utils::download.file(year_url, temp)
 
-  unzip(temp, exdir = path)
+  utils::unzip(temp, exdir = path)
 
   unlink(temp)
 
@@ -57,10 +57,10 @@ read_supp <- function(format = "cy", table_no = c(1, 2, 3, 4, 5, 6, 7, 8), path 
       temp_table <- year_files[[i + 1]]
       names(temp_table) <- as.character(tidyr::drop_na(temp_table)[1, ])
       series <- temp_table[3, 1]
-      header_row <- -which(temp_table[, 1] == as.character(head(tidyr::drop_na(temp_table), n = 1)[, 1]))
-      footer_row <- which(temp_table[, 1] == as.character(tail(tidyr::drop_na(temp_table), n = 1)[, 1])) - nrow(temp_table)
-      temp_table <- tail(head(temp_table, footer_row), header_row) %>%
-        tidyr::gather("year", "trade", 2:ncol(temp_table))
+      header_row <- -which(temp_table[, 1] == as.character(utils::head(tidyr::drop_na(temp_table), n = 1)[, 1]))
+      footer_row <- which(temp_table[, 1] == as.character(utils::tail(tidyr::drop_na(temp_table), n = 1)[, 1])) - nrow(temp_table)
+      temp_table <- utils::tail(utils::head(temp_table, footer_row), header_row) %>%
+        tidyr::gather("year", "value", 2:ncol(temp_table))
       temp_table[, "subset"] <- rep(stringr::word(gsub("\\s*\\([^\\)]+\\)", "", series), -1), nrow(temp_table))
       temp_table[, "abs_series"] <- rep(as.character(series), nrow(temp_table))
       names(temp_table)[1] <- "item"
