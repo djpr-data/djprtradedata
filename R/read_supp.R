@@ -21,8 +21,6 @@ read_supp <- function(format = "cy", table_no = c(1, 2, 3, 4, 5, 6, 7, 8), path 
     year <- rvest::read_html("https://www.abs.gov.au/statistics/economy/international-trade/international-trade-supplementary-information-financial-year/latest-release")
   } 
 
-  year <- rvest::read_html("https://www.abs.gov.au/statistics/economy/international-trade/international-trade-supplementary-information-calendar-year/latest-release")
-
   year_url <- year %>%
     rvest::html_nodes("a") %>%
     rvest::html_attr("href") %>%
