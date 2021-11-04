@@ -73,11 +73,11 @@ djprtradedata::read_merch(min_date = as.Date("2021-01-01"),
 #> # ... with 40,747 more rows
 ```
 
-Import ABS International Trade Supplementary Information by calendar
-year with `read_supp_cy()`:
+Import ABS International Trade Supplementary Information with
+`read_supp()`:
 
 ``` r
-djprtradedata::read_supp_cy(3)
+djprtradedata::read_supp("cy", 3)
 #> # A tibble: 9,702 x 5
 #>    item                                                      year  trade subset abs_series                                      
 #>    <chr>                                                     <chr> <chr> <chr>  <chr>                                           
@@ -91,26 +91,5 @@ djprtradedata::read_supp_cy(3)
 #>  8 Travel                                                    1999  5132  NSW    Table 3.1 International Trade in Services, Cred~
 #>  9 Business                                                  1999  623   NSW    Table 3.1 International Trade in Services, Cred~
 #> 10 Personal                                                  1999  4509  NSW    Table 3.1 International Trade in Services, Cred~
-#> # ... with 9,692 more rows
-```
-
-Import ABS International Trade Supplementary Information by financial
-year with `read_supp_fy()`:
-
-``` r
-djprtradedata::read_supp_fy(3)
-#> # A tibble: 9,702 x 5
-#>    item                                                      year    trade subset abs_series                                    
-#>    <chr>                                                     <chr>   <chr> <chr>  <chr>                                         
-#>  1 Manufacturing services on physical inputs owned by others 1998-99 -     NSW    Table 3.1 International Trade in Services, Cr~
-#>  2 Maintenance and repair services n.i.e                     1998-99 32    NSW    Table 3.1 International Trade in Services, Cr~
-#>  3 Transport                                                 1998-99 2722  NSW    Table 3.1 International Trade in Services, Cr~
-#>  4 Passenger (b)                                             1998-99 1544  NSW    Table 3.1 International Trade in Services, Cr~
-#>  5 Freight                                                   1998-99 272   NSW    Table 3.1 International Trade in Services, Cr~
-#>  6 Other                                                     1998-99 701   NSW    Table 3.1 International Trade in Services, Cr~
-#>  7 Postal and courier services (c)                           1998-99 205   NSW    Table 3.1 International Trade in Services, Cr~
-#>  8 Travel                                                    1998-99 4841  NSW    Table 3.1 International Trade in Services, Cr~
-#>  9 Business                                                  1998-99 589   NSW    Table 3.1 International Trade in Services, Cr~
-#> 10 Personal                                                  1998-99 4252  NSW    Table 3.1 International Trade in Services, Cr~
 #> # ... with 9,692 more rows
 ```
