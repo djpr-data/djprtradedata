@@ -13,21 +13,25 @@
 #' @export
 
 read_supp <- function(format = "cy", table_no = c(1, 2, 3, 4, 5, 6, 7, 8), list = FALSE, path = tempdir()) {
-  if (format == "cy"){
-    readabs::download_abs_data_cube("international-trade-supplementary-information-calendar-year",
-                         "zip",
-                         path)
+  if (format == "cy") {
+    readabs::download_abs_data_cube(
+      "international-trade-supplementary-information-calendar-year",
+      "zip",
+      path
+    )
   }
 
-  if (format == "fy"){
-    readabs::download_abs_data_cube("international-trade-supplementary-information-financial-year",
-                         "zip",
-                         path)
+  if (format == "fy") {
+    readabs::download_abs_data_cube(
+      "international-trade-supplementary-information-financial-year",
+      "zip",
+      path
+    )
   }
 
   table_no <- unique(table_no)
 
-  file_name <- list.files(path)[grepl("zip",list.files(path))]
+  file_name <- list.files(path)[grepl("zip", list.files(path))]
   utils::unzip(file.path(path, file_name), exdir = path)
 
   file_no <- length(list.files(path = path, pattern = "*.xls"))
@@ -58,7 +62,7 @@ read_supp <- function(format = "cy", table_no = c(1, 2, 3, 4, 5, 6, 7, 8), list 
         tidyr::gather("year", "value", 2:ncol(temp_table))
       temp_table[, "subset"] <- rep(stringr::word(gsub("\\s*\\([^\\)]+\\)", "", series), -1), nrow(temp_table))
       temp_table[, "abs_series"] <- rep(as.character(series), nrow(temp_table))
-      temp_table <- dplyr::mutate(temp_table, value = as.numeric(value))
+      temp_table <- dplyr::mutate(temp_table, value = suppressWarnings(as.numeric(value)))
       names(temp_table)[1] <- "item"
       assign(paste0("table_", j, ".", i), temp_table)
       tables[[j]][i] <- paste0("table_", j, ".", i)
@@ -70,14 +74,14 @@ read_supp <- function(format = "cy", table_no = c(1, 2, 3, 4, 5, 6, 7, 8), list 
 
     year_output[[j]] <- do.call("rbind", lapply(tables[[j]], as.name))
   }
-  if (list == TRUE){
+  if (list == TRUE) {
     if (length(year_output[table_no]) == 1) {
       year_output[table_no][[1]]
     } else {
       year_output[table_no]
     }
   }
-  if (list == FALSE){
+  if (list == FALSE) {
     dplyr::bind_rows(year_output[table_no])
   }
 }
