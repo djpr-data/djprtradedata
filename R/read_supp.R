@@ -45,7 +45,7 @@ read_supp <- function(format = "cy", table_no = c(1, 2, 3, 4, 5, 6, 7, 8), list 
     readabs::extract_abs_sheets
   )
 
-  unlink(paste0(path, "\\", list.files(path)))
+  unlink(file.path(path, list.files(path)))
 
   for (j in 2:file_no - 1) {
     year_files <- extract_files[[j]]
