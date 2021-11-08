@@ -13,11 +13,21 @@
 #' @export
 
 read_supp <- function(format = "cy", table_no = c(1, 2, 3, 4, 5, 6, 7, 8), list = FALSE, path = tempdir()) {
+  # Create a temp directory specific to this format + table no combination
+  temp_dir <- file.path(tempdir(),
+                        paste(format,
+                              paste0(table_no, collapse = ""),
+                              sep = "_"))
+
+  if (!dir.exists(temp_dir)) dir.create(temp_dir)
+
+  on.exit(unlink(temp_dir))
+
   if (format == "cy") {
     readabs::download_abs_data_cube(
       "international-trade-supplementary-information-calendar-year",
       "zip",
-      path
+      temp_dir
     )
   }
 
@@ -25,27 +35,34 @@ read_supp <- function(format = "cy", table_no = c(1, 2, 3, 4, 5, 6, 7, 8), list 
     readabs::download_abs_data_cube(
       "international-trade-supplementary-information-financial-year",
       "zip",
-      path
+      temp_dir
     )
   }
 
   table_no <- unique(table_no)
 
-  file_name <- list.files(path)[grepl("zip", list.files(path))]
-  utils::unzip(file.path(path, file_name), exdir = path)
+  file_name <- list.files(temp_dir)[grepl("zip", list.files(temp_dir))]
+  utils::unzip(file.path(temp_dir, file_name), exdir = temp_dir)
+  excel_files <- list.files(path = temp_dir, pattern = "*.xls", full.names = TRUE)
 
-  file_no <- length(list.files(path = path, pattern = "*.xls"))
+  copy_result <- file.copy(from = excel_files,
+            to = path,
+            overwrite = TRUE)
+
+  stopifnot(all(copy_result))
+
+  file_no <- length(excel_files)
 
   tables <- vector(mode = "list", length = file_no)
 
   year_output <- vector(mode = "list", length = file_no)
 
   extract_files <- lapply(
-    list.files(path, pattern = "*.xls"),
-    readabs::extract_abs_sheets
+    basename(excel_files),
+    readabs::extract_abs_sheets,
+    path = temp_dir
   )
 
-  unlink(file.path(path, list.files(path)))
 
   for (j in 2:file_no - 1) {
     year_files <- extract_files[[j]]
