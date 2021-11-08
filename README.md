@@ -35,20 +35,20 @@ Import ABS balance of payments data by State/Territory with
 
 ``` r
 djprtradedata::read_bop()
-#> # A tibble: 13,728 × 7
-#>    exports_imports indicator     goods_services state date       value series_id
-#>    <chr>           <chr>         <chr>          <chr> <date>     <dbl> <chr>    
-#>  1 Exports         Current Price Goods          New … 2011-09-01 11717 A8509271…
-#>  2 Exports         Current Price Goods          Vict… 2011-09-01  5797 A8509273…
-#>  3 Exports         Current Price Goods          Quee… 2011-09-01 15150 A8509268…
-#>  4 Exports         Current Price Goods          Sout… 2011-09-01  2964 A8509268…
-#>  5 Exports         Current Price Goods          West… 2011-09-01 32257 A8509272…
-#>  6 Exports         Current Price Goods          Aust… 2011-09-01     3 A8509273…
-#>  7 Exports         Current Price Services       New … 2011-09-01  5529 A8509268…
-#>  8 Exports         Current Price Services       Vict… 2011-09-01  3093 A8509273…
-#>  9 Exports         Current Price Services       Quee… 2011-09-01  2468 A8509272…
-#> 10 Exports         Current Price Services       Sout… 2011-09-01   513 A8509273…
-#> # … with 13,718 more rows
+#> # A tibble: 4,992 x 8
+#>    exports_imports indicator     goods_services state                        date       value series_id  unit      
+#>    <chr>           <chr>         <chr>          <chr>                        <date>     <dbl> <chr>      <chr>     
+#>  1 Exports         Current Price Goods          New South Wales              2011-09-01 11350 A85092741C $ Millions
+#>  2 Exports         Current Price Goods          Victoria                     2011-09-01  5756 A85092752K $ Millions
+#>  3 Exports         Current Price Goods          Queensland                   2011-09-01 14302 A85092700J $ Millions
+#>  4 Exports         Current Price Goods          South Australia              2011-09-01  2959 A85092678X $ Millions
+#>  5 Exports         Current Price Goods          Western Australia            2011-09-01 31871 A85092753L $ Millions
+#>  6 Exports         Current Price Goods          Australian Capital Territory 2011-09-01     3 A85092743J $ Millions
+#>  7 Exports         Current Price Services       New South Wales              2011-09-01  5804 A85092746R $ Millions
+#>  8 Exports         Current Price Services       Victoria                     2011-09-01  3256 A85092714W $ Millions
+#>  9 Exports         Current Price Services       Queensland                   2011-09-01  2424 A85092681L $ Millions
+#> 10 Exports         Current Price Services       South Australia              2011-09-01   565 A85092701K $ Millions
+#> # ... with 4,982 more rows
 ```
 
 Import ABS merchandise exports data with `read_merch()`:
@@ -56,19 +56,40 @@ Import ABS merchandise exports data with `read_merch()`:
 ``` r
 djprtradedata::read_merch(min_date = as.Date("2021-01-01"),
                           max_date = as.Date("2021-02-01"))
-#> # A tibble: 143,955 × 10
-#>    country industry sitc_rev3 time    region value   country_desc  industry_desc
-#>    <chr>   <chr>    <chr>     <chr>   <chr>  <chr>   <chr>         <chr>        
-#>  1 ANTC    C        011       2021-01 -      85.284  Antarctica    Manufacturing
-#>  2 BHRN    C        011       2021-01 -      233.659 Bahrain       Manufacturing
-#>  3 BHRN    C        011       2021-02 -      392.542 Bahrain       Manufacturing
-#>  4 BADE    C        011       2021-02 -      30.284  Bangladesh    Manufacturing
-#>  5 BRAZ    C        011       2021-01 -      594.109 Brazil        Manufacturing
-#>  6 BRAZ    C        011       2021-02 -      578.389 Brazil        Manufacturing
-#>  7 BRUN    C        011       2021-02 -      0.65    Brunei Darus… Manufacturing
-#>  8 CMBD    C        011       2021-01 -      481.318 Cambodia      Manufacturing
-#>  9 CMBD    C        011       2021-02 -      142.497 Cambodia      Manufacturing
-#> 10 CAN     C        011       2021-01 -      2553.65 Canada        Manufacturing
-#> # … with 143,945 more rows, and 2 more variables: region_desc <chr>,
-#> #   sitc_rev3_desc <chr>
+#> Downloading merchandise trade data from 2021-01 to 2021-02
+#> # A tibble: 40,757 x 7
+#>    date       country_dest           sitc_rev3                                              sitc_rev3_code origin   unit   value
+#>    <date>     <chr>                  <chr>                                                  <chr>          <chr>    <chr>  <dbl>
+#>  1 2021-01-01 Austria                Agricultural machinery (excl. tractors) and parts the~ 721            Austral~ 000s    3.15
+#>  2 2021-01-01 Bangladesh             Agricultural machinery (excl. tractors) and parts the~ 721            Austral~ 000s   24.0 
+#>  3 2021-01-01 Belgium                Agricultural machinery (excl. tractors) and parts the~ 721            Austral~ 000s   36.3 
+#>  4 2021-01-01 Brazil                 Agricultural machinery (excl. tractors) and parts the~ 721            Austral~ 000s    4.45
+#>  5 2021-02-01 Brazil                 Agricultural machinery (excl. tractors) and parts the~ 721            Austral~ 000s    8.54
+#>  6 2021-01-01 Canada                 Agricultural machinery (excl. tractors) and parts the~ 721            Austral~ 000s  179.  
+#>  7 2021-01-01 China                  Agricultural machinery (excl. tractors) and parts the~ 721            Austral~ 000s  166.  
+#>  8 2021-02-01 China                  Agricultural machinery (excl. tractors) and parts the~ 721            Austral~ 000s   85.6 
+#>  9 2021-02-01 Christmas Island       Agricultural machinery (excl. tractors) and parts the~ 721            Austral~ 000s   17.0 
+#> 10 2021-02-01 Cocos (Keeling) Island Agricultural machinery (excl. tractors) and parts the~ 721            Austral~ 000s    5.37
+#> # ... with 40,747 more rows
+```
+
+Import ABS International Trade Supplementary Information with
+`read_supp()`:
+
+``` r
+djprtradedata::read_supp("cy", 3)
+#> # A tibble: 9,702 x 5
+#>    item                                                      year  trade subset abs_series                                      
+#>    <chr>                                                     <chr> <chr> <chr>  <chr>                                           
+#>  1 Manufacturing services on physical inputs owned by others 1999  -     NSW    Table 3.1 International Trade in Services, Cred~
+#>  2 Maintenance and repair services n.i.e                     1999  29    NSW    Table 3.1 International Trade in Services, Cred~
+#>  3 Transport                                                 1999  2724  NSW    Table 3.1 International Trade in Services, Cred~
+#>  4 Passenger (b)                                             1999  1563  NSW    Table 3.1 International Trade in Services, Cred~
+#>  5 Freight                                                   1999  235   NSW    Table 3.1 International Trade in Services, Cred~
+#>  6 Other                                                     1999  728   NSW    Table 3.1 International Trade in Services, Cred~
+#>  7 Postal and courier services (c)                           1999  198   NSW    Table 3.1 International Trade in Services, Cred~
+#>  8 Travel                                                    1999  5132  NSW    Table 3.1 International Trade in Services, Cred~
+#>  9 Business                                                  1999  623   NSW    Table 3.1 International Trade in Services, Cred~
+#> 10 Personal                                                  1999  4509  NSW    Table 3.1 International Trade in Services, Cred~
+#> # ... with 9,692 more rows
 ```

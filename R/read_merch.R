@@ -82,7 +82,7 @@ read_merch <- function(path = tempdir(),
     merch <- merch$result
   }
 
-  merch <- merch  %>%
+  merch <- merch %>%
     dplyr::as_tibble()
 
   names(merch) <- tolower(names(merch))
@@ -119,8 +119,10 @@ read_merch <- function(path = tempdir(),
   )
 
   merch <- merch %>%
-    dplyr::select(-.data$industry,
-                  -.data$industry_desc)
+    dplyr::select(
+      -.data$industry,
+      -.data$industry_desc
+    )
 
   merch <- merch %>%
     dplyr::mutate(date = lubridate::ymd(paste0(.data$time, "-01"))) %>%
@@ -134,10 +136,12 @@ read_merch <- function(path = tempdir(),
     )
 
   merch <- merch %>%
-    dplyr::arrange(.data$origin,
-                   .data$sitc_rev3,
-                   .data$country_dest,
-                   .data$date)
+    dplyr::arrange(
+      .data$origin,
+      .data$sitc_rev3,
+      .data$country_dest,
+      .data$date
+    )
 
   merch
 }
