@@ -1,5 +1,5 @@
 #' Download, tidy and import ABS International Trade Supplementary Information
-#' 
+#'
 #' Downloads Tables 1 through 8, inculsive, of the ABS International Trade: Supplementary Information data.
 #' @param format Selects whether calendar year or financial year data is imported
 #' @param table_no Selects which tables from the ABS will be imported
@@ -28,7 +28,7 @@ read_supp <- function(format = "cy", table_no = c(1, 2, 3, 4, 5, 6, 7, 8), list 
   table_no <- unique(table_no)
 
   file_name <- list.files(path)[grepl("zip",list.files(path))]
-  utils::unzip(paste0(path, "\\", file_name), exdir = path)
+  utils::unzip(file.path(path, file_name), exdir = path)
 
   file_no <- length(list.files(path = path, pattern = "*.xls"))
 
