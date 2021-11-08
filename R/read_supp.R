@@ -3,6 +3,7 @@
 #' Downloads Tables 1 through 8, inculsive, of the ABS International Trade: Supplementary Information data.
 #' @param format Selects whether calendar year or financial year data is imported
 #' @param table_no Selects which tables from the ABS will be imported
+#' @param list Where multiple tables are requested, if list is TRUE, table outputs exported separately in a list, if FALSE tables are exported in a combined tibble.
 #' @param path Path where Excel files downloaded from the ABS should be stored
 #' @return A tibble containing the relevant table, or a list of tibbles if more than one ABS table has been requested
 #' @examples
@@ -11,7 +12,7 @@
 #' }
 #' @export
 
-read_supp <- function(format = "cy", table_no = c(1, 2, 3, 4, 5, 6, 7, 8), path = tempdir()) {
+read_supp <- function(format = "cy", table_no = c(1, 2, 3, 4, 5, 6, 7, 8), list = FALSE, path = tempdir()) {
   temp <- tempfile()
 
   if (format == "cy"){
@@ -28,6 +29,10 @@ read_supp <- function(format = "cy", table_no = c(1, 2, 3, 4, 5, 6, 7, 8), path 
     stringr::str_subset(".zip")
 
   utils::download.file(year_url, temp)
+
+  # download_abs_data_cube("international-trade-supplementary-information-calendar-year",
+  #                        "zip",
+  #                        temp)
 
   utils::unzip(temp, exdir = path)
 
@@ -63,6 +68,7 @@ read_supp <- function(format = "cy", table_no = c(1, 2, 3, 4, 5, 6, 7, 8), path 
         tidyr::gather("year", "value", 2:ncol(temp_table))
       temp_table[, "subset"] <- rep(stringr::word(gsub("\\s*\\([^\\)]+\\)", "", series), -1), nrow(temp_table))
       temp_table[, "abs_series"] <- rep(as.character(series), nrow(temp_table))
+      temp_table <- dplyr::mutate(temp_table, value = as.numeric(value))
       names(temp_table)[1] <- "item"
       assign(paste0("table_", j, ".", i), temp_table)
       tables[[j]][i] <- paste0("table_", j, ".", i)
@@ -74,10 +80,14 @@ read_supp <- function(format = "cy", table_no = c(1, 2, 3, 4, 5, 6, 7, 8), path 
 
     year_output[[j]] <- do.call("rbind", lapply(tables[[j]], as.name))
   }
-
-  if (length(year_output[table_no]) == 1) {
-    year_output[table_no][[1]]
-  } else {
-    year_output[table_no]
+  if (list == TRUE){
+    if (length(year_output[table_no]) == 1) {
+      year_output[table_no][[1]]
+    } else {
+      year_output[table_no]
+    }
+  }
+  if (list == FALSE){
+    dplyr::bind_rows(year_output[table_no])
   }
 }
