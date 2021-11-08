@@ -62,7 +62,7 @@ read_supp <- function(format = "cy", table_no = c(1, 2, 3, 4, 5, 6, 7, 8), list 
         tidyr::gather("year", "value", 2:ncol(temp_table))
       temp_table[, "subset"] <- rep(stringr::word(gsub("\\s*\\([^\\)]+\\)", "", series), -1), nrow(temp_table))
       temp_table[, "abs_series"] <- rep(as.character(series), nrow(temp_table))
-      temp_table <- dplyr::mutate(temp_table, value = suppressWarnings(as.numeric(value)))
+      temp_table <- dplyr::mutate(temp_table, value = suppressWarnings(as.numeric(.data$value)))
       names(temp_table)[1] <- "item"
       assign(paste0("table_", j, ".", i), temp_table)
       tables[[j]][i] <- paste0("table_", j, ".", i)
