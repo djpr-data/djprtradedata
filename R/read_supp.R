@@ -25,6 +25,8 @@ read_supp <- function(format = "cy", table_no = c(1, 2, 3, 4, 5, 6, 7, 8), list 
                          path)
   }
 
+  table_no <- unique(table_no)
+
   file_name <- list.files(path)[grepl("zip",list.files(path))]
   utils::unzip(paste0(path, "\\", file_name), exdir = path)
 
@@ -35,11 +37,11 @@ read_supp <- function(format = "cy", table_no = c(1, 2, 3, 4, 5, 6, 7, 8), list 
   year_output <- vector(mode = "list", length = file_no)
 
   extract_files <- lapply(
-    list.files(path = path, pattern = "*.xls"),
+    list.files(path, pattern = "*.xls"),
     readabs::extract_abs_sheets
   )
 
-  unlink(path, recursive = TRUE)
+  unlink(paste0(path, "\\", list.files(path)))
 
   for (j in 2:file_no - 1) {
     year_files <- extract_files[[j]]
