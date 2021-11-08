@@ -13,36 +13,22 @@
 #' @export
 
 read_supp <- function(format = "cy", table_no = c(1, 2, 3, 4, 5, 6, 7, 8), list = FALSE, path = tempdir()) {
-  temp <- tempfile()
-
   if (format == "cy"){
-    year <- rvest::read_html("https://www.abs.gov.au/statistics/economy/international-trade/international-trade-supplementary-information-calendar-year/latest-release")
+    readabs::download_abs_data_cube("international-trade-supplementary-information-calendar-year",
+                         "zip",
+                         path)
   }
 
   if (format == "fy"){
-    year <- rvest::read_html("https://www.abs.gov.au/statistics/economy/international-trade/international-trade-supplementary-information-financial-year/latest-release")
-  } 
+    readabs::download_abs_data_cube("international-trade-supplementary-information-financial-year",
+                         "zip",
+                         path)
+  }
 
-  year_url <- year %>%
-    rvest::html_nodes("a") %>%
-    rvest::html_attr("href") %>%
-    stringr::str_subset(".zip")
-
-  utils::download.file(year_url, temp)
-
-  # download_abs_data_cube("international-trade-supplementary-information-calendar-year",
-  #                        "zip",
-  #                        temp)
-
-  utils::unzip(temp, exdir = path)
-
-  unlink(temp)
+  file_name <- list.files(path)[grepl("zip",list.files(path))]
+  utils::unzip(paste0(path, "\\", file_name), exdir = path)
 
   file_no <- length(list.files(path = path, pattern = "*.xls"))
-
-  if (file_no >= 15) {
-    file_no <- 0.5 * file_no
-  }
 
   tables <- vector(mode = "list", length = file_no)
 
@@ -52,6 +38,8 @@ read_supp <- function(format = "cy", table_no = c(1, 2, 3, 4, 5, 6, 7, 8), list 
     list.files(path = path, pattern = "*.xls"),
     readabs::extract_abs_sheets
   )
+
+  unlink(path, recursive = TRUE)
 
   for (j in 2:file_no - 1) {
     year_files <- extract_files[[j]]
