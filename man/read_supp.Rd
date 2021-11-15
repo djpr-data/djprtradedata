@@ -5,7 +5,7 @@
 \title{Download, tidy and import ABS International Trade Supplementary Information}
 \usage{
 read_supp(
-  format = "cy",
+  format = c("cy", "fy"),
   table_no = c(1, 2, 3, 4, 5, 6, 7, 8),
   list = FALSE,
   path = tempdir()
@@ -27,7 +27,5 @@ A tibble containing the relevant table, or a list of tibbles if more than one AB
 Downloads Tables 1 through 8, inculsive, of the ABS International Trade: Supplementary Information data.
 }
 \examples{
-\dontrun{
 read_supp()
-}
 }

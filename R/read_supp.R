@@ -7,12 +7,14 @@
 #' @param path Path where Excel files downloaded from the ABS should be stored
 #' @return A tibble containing the relevant table, or a list of tibbles if more than one ABS table has been requested
 #' @examples
-#' \dontrun{
 #' read_supp()
-#' }
 #' @export
 
-read_supp <- function(format = "cy", table_no = c(1, 2, 3, 4, 5, 6, 7, 8), list = FALSE, path = tempdir()) {
+read_supp <- function(format = c("cy", "fy"),
+                      table_no = c(1, 2, 3, 4, 5, 6, 7, 8), list = FALSE, path = tempdir()) {
+
+  format <- match.arg(format)
+
   # Create a temp directory specific to this format + table no combination
   temp_dir <- file.path(tempdir(),
                         paste(format,
