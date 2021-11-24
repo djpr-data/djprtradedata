@@ -16,41 +16,11 @@ knitr::opts_chunk$set(
 # djprtradedata
 
 <!-- badges: start -->
-[![R-CMD-check](https://github.com/djpr-data/djprtradedata/workflows/R-CMD-check/badge.svg)](https://github.com/djpr-data/djprtradedata/actions)
-[![Codecov test coverage](https://codecov.io/gh/djpr-data/djprtradedata/branch/main/graph/badge.svg)](https://codecov.io/gh/djpr-data/djprtradedata?branch=main)
+
+[![R-CMD-check](https://github.com/djpr-data/djprtradedata/workflows/R-CMD-check/badge.svg)](https://github.com/djpr-data/djprtradedata/actions) [![Codecov test coverage](https://codecov.io/gh/djpr-data/djprtradedata/branch/main/graph/badge.svg)](https://codecov.io/gh/djpr-data/djprtradedata?branch=main)
+
 <!-- badges: end -->
 
 The goal of djprtradedata is to download, tidy and store public data used in the DJPR Trade Dashboard.
 
-## Install djprtradedata
-
-If you do not have the `devtools` package installed, install it from CRAN with: 
-```{r, eval = FALSE}
-install.packages("devtools")
-```
-
-Install `djprtradedata`:
-```{r, eval = FALSE}
-devtools::install_github("djpr-data/djprtradedata")
-```
-
-## Using djprtradedata
-
-Import ABS balance of payments data by State/Territory with `read_bop()`:
-
-```{r}
-djprtradedata::read_bop()
-```
-
-Import ABS merchandise exports data with `read_merch()`:
-
-```{r}
-djprtradedata::read_merch(min_date = as.Date("2021-01-01"),
-                          max_date = as.Date("2021-02-01"))
-```
-
-Import ABS International Trade Supplementary Information with `read_supp()`:
-
-```{r}
-djprtradedata::read_supp("cy", 3)
-```
+**Note that this repository has been archived. The functions from this package now live in [djprtradedash](<https://github.com/djpr-data/djprtradedash>). This package should not be updated further.**
